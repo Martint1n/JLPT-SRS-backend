@@ -1,0 +1,40 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  name String
+  email String @unique
+  password String
+  progress Progress[]
+}
+
+model Hiragana {
+  id Int @id @default(autoincrement())
+  Hiragana String
+  Romaji String
+  progress Progress[]
+}
+
+model Progress {
+  id Int @id @default(autoincrement())
+  userId Int
+  hiraganaId Int
+  data_a_reviser DateTime
+  date_suivante DateTime
+  
+  user           User     @relation(fields: [userId], references: [id])
+  hiragana       Hiragana @relation(fields: [hiraganaId], references: [id])
+}
