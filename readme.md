@@ -21,7 +21,7 @@ Built to help French speakers progress through JLPT levels (N5 → N3).
 
 ## Installation
 1. Clone the repo
-   git clone https://github.com/ton-username/JLPT-SRS-backend.git
+   git clone https://github.com/Martint1n/JLPT-SRS-backend.git
 2. Install dependencies
    npm install
 3. Set up environment variables
