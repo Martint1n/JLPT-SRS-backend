@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "User" ADD COLUMN     "dailyNewCards" INTEGER NOT NULL DEFAULT 10;
