@@ -33,7 +33,8 @@ Built to help French speakers progress through JLPT levels (N5 → N3).
    npm run dev
 
 ## Project Roadmap
-- [x] Phase 1 — Express + Prisma + PostgreSQL + JWT Auth
+- [ ] Phase 1 — Express + Prisma + PostgreSQL + JWT Auth
 - [ ] Phase 2 — Dockerize the app
-- [ ] Phase 3 — CI/CD with GitHub Actions
-- [ ] Phase 4 — AWS deployment (EC2 + RDS)
+- [x] Phase 3 — React/Vite/TypeScript frontend connected to the backend
+- [ ] Phase 4 — CI/CD with GitHub Actions
+- [ ] Phase 5 — Database migration to AWS RDS, Nginx reverse proxy for serving the frontend alongside the backend, and infrastructure-as-code with Terraform

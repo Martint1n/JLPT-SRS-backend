@@ -4,6 +4,7 @@ import prisma from '../prisma.js';
 import { PrismaClient, Prisma } from "@prisma/client";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import middlewareToken from '../middleware/middlewareToken.js';
 
 
 const router = express.Router();
@@ -69,6 +70,27 @@ router.post("/signin", async(req: Request, res: Response) => {
 
     } catch (error){
         res.status(500).json({message:"Issue server"})
+    }
+})
+
+router.get('/me', middlewareToken, async(req: Request, res: Response) => {
+    if (!req.user) {
+        return res.status(401).json({message: 'Error token'})
+    }
+    try{
+        const user = await prisma.user.findUnique({
+            where: {
+                id: req.user.id
+            },
+            select: {
+                id: true, email: true, name: true, progress: true, dailyNewCards: true,
+            }
+            // can use omit password instead of select
+        })
+        res.status(200).json({user, message: 'User authorized'});
+    } catch{
+        res.status(500).json({message: 'Error server'});
+
     }
 })
 

@@ -12,7 +12,7 @@ const middlewareToken = (req: Request, res: Response, next: NextFunction) => {
         if (!token) {
             return res.status(401).json({message: "Missing token"})
         }else {
-            const decoded = jwt.verify(token, secret_key_JWT)//check if token exist with jwt.verify)()
+            const decoded = jwt.verify(token, secret_key_JWT)//check if token is valid with jwt.verify)()
             req.user = decoded as JwtPayload
             next()
         }
