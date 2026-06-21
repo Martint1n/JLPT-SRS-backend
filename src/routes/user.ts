@@ -5,12 +5,12 @@ import bcrypt from 'bcrypt';
 import middlewareToken from '../middleware/middlewareToken.js';
 
 const router = express.Router();
+
 interface CreateUserBody {
     email: string,
     name: string,
     password: string,
-
-}
+};
 
 /* GET home page. */
 router.get('/getuser', async(req: Request, res: Response) => {
@@ -29,9 +29,9 @@ router.put('/updateuser', middlewareToken, async(req: Request, res: Response) =>
     }
     try{
         const { email, name, password } = req.body;
-        const userId = req.user.id
+        const userId = req.user.id;
         const salt = bcrypt.genSaltSync(10);
-        const hash = bcrypt.hashSync(password, salt)
+        const hash = bcrypt.hashSync(password, salt);
 
         await prisma.user.update({
             where: {

@@ -20,6 +20,8 @@ model User {
   password String
   progress Progress[]
   dailyNewCards Int @default(10)
+  dailySeenCount Int @default(0)
+  lastSeenDate DateTime @default(now())
 }
 
 model Hiragana {

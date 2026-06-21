@@ -59,11 +59,18 @@ router.get('/getnewhiraganas', middlewareToken, async(req: Request, res: Respons
             }
         })
         if (userDailyNewCards) {
+
+            const userInfo = await prisma.user.findUnique({
+                where: {
+                    id: req.user.id
+                },
+            });
+
             const unknownHiraganas = await prisma.hiragana.findMany({
                 where: {
                     id : {notIn: unknownHiraganasId}
                 },
-                take: userDailyNewCards.dailyNewCards
+                take: userDailyNewCards.dailyNewCards - userInfo.dailySeenCount
             })
             res.status(200).json({unknownHiraganas, message: 'Daily new cards sent'})
         } else {
@@ -78,9 +85,9 @@ router.get('/getnewhiraganas', middlewareToken, async(req: Request, res: Respons
 router.post('/answercard', middlewareToken, async(req: Request, res: Response) => {
     try{
         if (!req.user) {
-            return res.status(401).json({message: "Non autorized"})
+            return res.status(401).json({message: "Non autorized"});
         }
-    //chercher si le hiragana existe dans la db progress
+
         const doesHiraganaInProgress = await prisma.progress.findUnique({
             where: {
                 userId_hiraganaId: {
@@ -114,6 +121,18 @@ router.post('/answercard', middlewareToken, async(req: Request, res: Response) =
                     repetitions: newRepetitions
                 }
             })
+
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            await prisma.user.update({
+                where: {
+                    id: req.user.id
+                },
+                data: {
+                    dailySeenCount : user.lastSeenDate < today ? 1 : { increment: 1 },
+                    lastSeenDate: new Date()
+                }
+            });
             res.status(200).json({message: 'progress created'})
         }
     } catch{
