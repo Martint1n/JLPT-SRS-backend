@@ -41,6 +41,6 @@ model Progress {
 
   @@unique([userId, hiraganaId])
   
-  user           User     @relation(fields: [userId], references: [id])
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   hiragana       Hiragana @relation(fields: [hiraganaId], references: [id])
 }

@@ -30,9 +30,11 @@ router.put('/updateuser', middlewareToken, async(req: Request, res: Response) =>
     try{
         const { email, name, password } = req.body;
         const userId = req.user.id;
-        const salt = bcrypt.genSaltSync(10);
-        const hash = bcrypt.hashSync(password, salt);
-
+        let hash = null;
+        if (password) {
+            const salt = bcrypt.genSaltSync(10);
+            hash = bcrypt.hashSync(password, salt);
+        }
         await prisma.user.update({
             where: {
                 id : userId
@@ -40,7 +42,7 @@ router.put('/updateuser', middlewareToken, async(req: Request, res: Response) =>
             data : {
                 email,
                 name,
-                password: hash
+                ...(hash ? { password: hash } : {}) 
             }
         })
         res.status(200).json({message: "database updated"})
@@ -58,7 +60,8 @@ router.delete('/deleteuser', middlewareToken, async(req: Request, res: Response)
             where: {id: req.user.id}
         })
         res.status(204).send()
-    } catch{
+    } catch(error){
+        console.error('Delete error:', error);
         res.status(500).json({message: "Error server"})
     }
 })

@@ -65,7 +65,9 @@ router.get('/getnewhiraganas', middlewareToken, async(req: Request, res: Respons
                     id: req.user.id
                 },
             });
-
+            if (!userInfo) {
+                return console.log('Error userInfo null from /getnewhiraganas');
+            }
             const unknownHiraganas = await prisma.hiragana.findMany({
                 where: {
                     id : {notIn: unknownHiraganasId}
@@ -124,12 +126,21 @@ router.post('/answercard', middlewareToken, async(req: Request, res: Response) =
 
             const today = new Date();
             today.setHours(0, 0, 0, 0);
+
+            const userInfo = await prisma.user.findUnique({
+                where: {
+                    id: req.user.id
+                },
+            });
+            if (!userInfo) {
+                return console.log('Error userInfo null from answercard');
+            }
             await prisma.user.update({
                 where: {
                     id: req.user.id
                 },
                 data: {
-                    dailySeenCount : user.lastSeenDate < today ? 1 : { increment: 1 },
+                    dailySeenCount : userInfo.lastSeenDate < today ? 1 : { increment: 1 },
                     lastSeenDate: new Date()
                 }
             });
