@@ -34,13 +34,16 @@ router.post('/signup', async(req: Request, res: Response) => {
         if (error instanceof Prisma.PrismaClientKnownRequestError){
             if (error.code === "P2002") {
                 res.status(409).json({message:"email already exist"})
+                console.error(error)
             }
             else {
                 res.status(500).json({message:"Issue server"})
+                console.error(error)
             }
         }
         else {
             res.status(500).json({message:"Issue server"})
+            console.error(error)
         }
     }
 })

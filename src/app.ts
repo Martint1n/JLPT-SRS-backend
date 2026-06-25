@@ -2,7 +2,7 @@ import 'dotenv/config'
 import express from 'express'
 import cors from 'cors';
 import indexRouter from './routes/index.js';
-//ajouter ici les fichiers route lorsque je les créer pour que index.js y ai acces
+
 import hiraganaRouter from './routes/hiragana.js'
 import authRouter from './routes/auth.js'
 import userRouter from './routes/user.js'
@@ -20,7 +20,6 @@ app.listen(4000, () => {
 
 
 app.use('/', indexRouter);
-// ajouter ici les routes 
 app.use('/hiragana', hiraganaRouter)
 app.use('/auth', authRouter)
 app.use('/user', userRouter)
